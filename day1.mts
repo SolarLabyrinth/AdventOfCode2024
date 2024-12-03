@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "node:fs/promises";
 
 const contents = await fs.readFile("./input/day1.txt", "utf-8");
 
