@@ -6,10 +6,8 @@ type Report = number[];
 
 const reports: Report[] = [];
 for (const line of contents.split(/\r?\n/)) {
-  if (line) {
-    const levels = line.split(/\s+/).filter(Boolean).map(Number);
-    reports.push(levels);
-  }
+  const levels = line.split(/\s+/).filter(Boolean).map(Number);
+  reports.push(levels);
 }
 
 function checkSequence(

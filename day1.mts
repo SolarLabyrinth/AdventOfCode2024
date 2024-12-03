@@ -6,11 +6,9 @@ let leftList: number[] = [];
 let rightList: number[] = [];
 
 for (const line of contents.split(/\r?\n/)) {
-  const match = /^\s*(\d+)\s+(\d+)\s*$/.exec(line);
-  if (match) {
-    leftList.push(Number(match[1]));
-    rightList.push(Number(match[2]));
-  }
+  const [left, right] = line.split(/\s+/).filter(Boolean).map(Number);
+  leftList.push(left);
+  rightList.push(right);
 }
 
 leftList.sort();
