@@ -15,38 +15,21 @@ for (const line of contents.split(/\r?\n/)) {
   }
 }
 
-function getRulesForUpdate(update: Update) {
-  let filteredRules = rules.filter(
-    ([a, b]) => update.includes(a) && update.includes(b)
-  );
-  return filteredRules;
-}
-
-function matchesRule(update: Update, rule: Rule) {
-  const [a, b] = update.filter((page) => rule.includes(page));
-  const [c, d] = rule;
-  return a === c && b === d;
-}
-
 function getFailingRules(update: Update) {
   const failingRules: Rule[] = [];
 
-  const matchingRules = getRulesForUpdate(update);
+  const matchingRules = rules.filter(
+    ([a, b]) => update.includes(a) && update.includes(b)
+  );
   for (const rule of matchingRules) {
-    if (!matchesRule(update, rule)) {
+    const [a, b] = update.filter((page) => rule.includes(page));
+    const [c, d] = rule;
+    if (a !== c || b !== d) {
       failingRules.push(rule);
     }
   }
   return failingRules;
 }
-
-let middleSum1 = 0;
-for (const update of updates) {
-  if (getFailingRules(update).length === 0) {
-    middleSum1 += update[Math.floor(update.length / 2)];
-  }
-}
-console.log(middleSum1);
 
 function fixUpdate(update: Update) {
   let fixedUpdate = update;
@@ -68,6 +51,14 @@ function fixUpdate(update: Update) {
 
   return fixedUpdate;
 }
+
+let middleSum1 = 0;
+for (const update of updates) {
+  if (getFailingRules(update).length === 0) {
+    middleSum1 += update[Math.floor(update.length / 2)];
+  }
+}
+console.log(middleSum1);
 
 let middleSum2 = 0;
 for (const update of updates) {
