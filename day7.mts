@@ -8,21 +8,22 @@ type Operator = "+" | "*" | "||";
 function evaluate(operators: Operator[]) {
   let total = 0;
   for (const line of contents.split(/\r?\n/)) {
-    const [result, ...operands] = line
+    const [result, firstOperand, ...remainingOperands] = line
       .split(/:|\s/)
       .filter(Boolean)
       .map(Number);
 
-    const numPossibilities = operators.length ** (operands.length - 1);
+    const numPossibilities = operators.length ** remainingOperands.length;
 
     for (let i = 0; i < numPossibilities; i++) {
+      // Turns decimal i into pattern like: 0010
       const pattern = i
         .toString(operators.length)
-        .padStart(operands.length - 1, "0")
+        .padStart(remainingOperands.length, "0")
         .split("")
         .map(Number);
 
-      let possibilityResult = operands.slice(1).reduce((acc, item, i) => {
+      const patternResult = remainingOperands.reduce((acc, item, i) => {
         const operator = operators[pattern[i]];
         if (operator === "+") {
           return acc + item;
@@ -33,9 +34,9 @@ function evaluate(operators: Operator[]) {
         } else {
           throw new Error("This should never happen");
         }
-      }, operands[0]);
+      }, firstOperand);
 
-      if (possibilityResult === result) {
+      if (patternResult === result) {
         total += result;
         break;
       }
